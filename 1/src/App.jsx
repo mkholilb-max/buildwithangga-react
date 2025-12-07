@@ -1,6 +1,8 @@
 import { useState } from 'react'
 import logoSepatu from './assets/GV9095-1.jpg'
 import './App.css'
+import ReviewItems from './component/reviev.jsx'
+import PropTypes, { checkPropTypes } from 'prop-types'
 
 function App() {
   return (
@@ -8,7 +10,7 @@ function App() {
     <div className="App flex flex-col justify-center w-full min-h-screen">
     <div className='Background flex justify-center w-[80%] mx-auto text-center mt-10 p-10 rounded-lg overflow-hidden'>
           <Foto />
-          <ProductInfo category="Sepatu Running" name="Adidas Adizero" IsDiscount="coming"/>
+          <ProductInfo category="Sepatu Running" name="Adidas Adizero" IsDiscount="coming" />
     </div>
     <ReviewItems />
     </div>
@@ -16,41 +18,6 @@ function App() {
   )
 }
 
-function ReviewItems() {
-  //mempersiapkan data dummy JSON
-  const user = [{
-    id : 1,
-    name: "Masayoshi Setiawan",
-    review : "Sepatunya keren banget, nyaman dipakai lari pagi!",
-    img : "https://images.pexels.com/photos/1251247/pexels-photo-1251247.jpeg"
-  },{
-   id : 2,
-    name: "Setiawan",
-    review : "Waw sepatunya keren banget, nyaman dipakai lari",
-    img : "https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg"
-  },{
-    id : 3,
-    name: "Oshi Awan",
-    review : "Nyaman dipakai lari pagi!",
-    img : "https://images.pexels.com/photos/415829/pexels-photo-415829.jpeg"
-  }
-];
-const listReview = user.map((itemReview) => 
-    <div className='flex mx-auto max-w-[600px] w-full m-5'>
-          <img className='w-20 h-20 bg-[#b1b1b1] rounded-[11px] mr-4 float-left' src={itemReview.img} alt="" />
-          <div className=''>
-          <h3 className='text-[20px] mb-3 font-semibold'>{itemReview.name}</h3>
-          <p className='text-[16px]'>{itemReview.review}</p>
-          </div>
-        </div>
-)
-    return(
-      <div className='flex flex-col justify-center w-full overflow-hidden pb-[100px]'>
-        <h2 className='text-2xl font-bold mt-[50px] mb-6 text-center'>Reviews</h2>
-        {listReview}
-    </div>
-    );
-};
 
 
 function Foto() {
@@ -62,9 +29,9 @@ function Foto() {
 }
 
 function CheckDiscount(props) {
-  const { IsDiscount } = props;
+  const { IsDiscount, Discount } = props;
   if(IsDiscount == "yes"){
-    return (<p>Diskon 50% off</p>)
+    return (<p>Diskon {Discount}% off</p>)
   } else if(IsDiscount == "coming"){
     return (<p>Akan Ada Diskon</p>)
   } else {
@@ -75,7 +42,7 @@ function ProductInfo(props) {
   const { category,name, IsDiscount  } = props;
   const benefits = ["Tidak kusut kena air","Ringan dipakai","Desain keren dan modern, Tidak kusut kena air","Ringan dipakai","Desain keren dan modernm"];
   const listBenefits = benefits.map((itemBenefits) =>
-    <li className=''>{itemBenefits}</li>
+    <li key={listBenefits} className=''>{itemBenefits}</li>
   );
   return (
       <div className='Deskripsi m-4 space-y-2 text-left'>
@@ -83,7 +50,7 @@ function ProductInfo(props) {
         <h1 className='font-bold text-[30px]'>{name}</h1>
         <p>IDR 1.200.000</p>
         <p>sepatu running khas anak muda buatan adidas</p>
-        <CheckDiscount IsDiscount={IsDiscount}/>
+        <CheckDiscount IsDiscount={IsDiscount} Discount="50"/>
 
         <ul className='text-[14px] m-4 list-disc list-inside'>
           {listBenefits}
@@ -97,6 +64,10 @@ function ProductInfo(props) {
 
 function AddCart(e) {
   return console.log(e + " added to cart")
+}
+
+CheckDiscount.PropTypes = {
+  Discount : PropTypes.number.isRequired,
 }
 
 export default App
